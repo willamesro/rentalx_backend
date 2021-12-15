@@ -1,11 +1,21 @@
-import { Category } from "../model/Category";
-import { ICreateCategoryDTO } from "./ICategoriesRepository";
+import { Category } from "../../model/Category";
+import {
+    ICategoriesRepository,
+    ICreateCategoryDTO,
+} from "../ICategoriesRepository";
 
-class CategoriesRespository {
+class CategoriesRespository implements ICategoriesRepository {
     private categories: Category[];
-
-    constructor() {
+    // eslint-disable-next-line no-use-before-define
+    private static INSTANCE: CategoriesRespository;
+    private constructor() {
         this.categories = [];
+    }
+    public static getInstace(): CategoriesRespository {
+        if (!CategoriesRespository.INSTANCE) {
+            CategoriesRespository.INSTANCE = new CategoriesRespository();
+        }
+        return CategoriesRespository.INSTANCE;
     }
     create({ name, description }: ICreateCategoryDTO): void {
         const category = new Category();
